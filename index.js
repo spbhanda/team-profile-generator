@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
-const Employee = require("./lib/Employee");
-const Manager = require("./lib/Manager");
+const employee = require("./lib/Employee");
+const manager = require("./lib/Manager");
 const engineer = require("./lib/Engineer");
 const intern = require("./lib/Intern");
 
@@ -32,6 +32,6 @@ const questions = [
 ];
 
 inquirer.prompt(questions).then((answers) => {
-   let emp1 = new Employee(answers.title, answers.name, answers.office, answers.id);
+   let emp1 = new anything(answers.title, answers.name, answers.office, answers.id);
    console.log(emp1.title, emp1.name);
 });
