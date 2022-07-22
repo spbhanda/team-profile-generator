@@ -1,41 +1,83 @@
 const inquirer = require("inquirer");
-const employee = require("./lib/Employee");
-const manager = require("./lib/Manager");
-const engineer = require("./lib/Engineer");
-const intern = require("./lib/Intern");
+const Employee = require("./lib/Employee");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 
 // Initialize
-
-function employees() {
-   addEmployee(title);
-}
-
-const questions = [
+function startApp() {}
+const roles = [
    {
-      type: "text",
-      name: "title",
-      message: "What is your title?",
+      type: "input",
+      name: "manager",
+      message: "Manager Name?",
    },
-
+];
+const managerInfo = [
    {
       type: "text",
       name: "name",
-      message: "What is your name?",
-   },
-   {
-      type: "text",
-      name: "office",
-      message: "What is your Office?",
+      message: "Employee Name?",
    },
 
    {
       type: "text",
       name: "id",
-      message: "What is your ID?",
+      message: "Employee ID?",
+   },
+   {
+      type: "text",
+      name: "email",
+      message: "Employee Email?",
+   },
+   {
+      type: "text",
+      name: "officeNumber",
+      message: "office Number?",
+   },
+];
+const teamMembers = [
+   {
+      type: "list",
+      name: "role",
+      message: "Employee Role?",
+      choices: ["Engineer", "Intern"],
+   },
+   {
+      type: "text",
+      name: "name",
+      message: "Employee Name?",
+   },
+
+   {
+      type: "text",
+      name: "id",
+      message: "Employee ID?",
+   },
+   {
+      type: "text",
+      name: "email",
+      message: "Employee Email?",
    },
 ];
 
-inquirer.prompt(questions).then((answers) => {
-   let emp1 = new anything(answers.title, answers.name, answers.office, answers.id);
-   console.log(emp1.title, emp1.name);
+inquirer.prompt(roles).then((team) => {
+   if (team.role === "Manager" || team.role === "manager") {
+      inquirer.prompt(managerInfo).then((answers) => {
+         let newEmployee = new Manager(answers.name, answers.role, answers.id, answers.email);
+         console.log(newEmployee.getName());
+         console.log(newEmployee.getRole());
+      });
+   }
+   if (answers.role === "Engineer") {
+      let newEmployee = new Engineer(answers.name, answers.role, answers.id, answers.email);
+      console.log(newEmployee.getName());
+      console.log(newEmployee.getRole());
+   }
+
+   if (answers.role === "Intern") {
+      let newEmployee = new Intern(answers.name, answers.role, answers.id, answers.email);
+      console.log(newEmployee.getName());
+      console.log(newEmployee.getRole());
+   }
 });
