@@ -1,83 +1,181 @@
 const inquirer = require("inquirer");
-const Employee = require("./lib/Employee");
+inquirer.registerPrompt("loop", require("inquirer-loop")(inquirer));
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-
-// Initialize
-function startApp() {}
-const roles = [
-   {
-      type: "input",
-      name: "manager",
-      message: "Manager Name?",
-   },
-];
+// team array
+const teamMembers = [];
 const managerInfo = [
    {
-      type: "text",
+      type: "input",
       name: "name",
-      message: "Employee Name?",
+      message: "Enter manager's name: ",
    },
-
    {
-      type: "text",
+      type: "input",
       name: "id",
-      message: "Employee ID?",
+      message: "Enter employee ID: ",
    },
    {
-      type: "text",
+      type: "input",
       name: "email",
-      message: "Employee Email?",
+      message: "Enter employee email: ",
+      validate: (mgr) => {
+         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+         if (!emailRegex.test(mgr)) {
+            return "You must provide a valid email address!";
+         }
+         return true;
+      },
    },
    {
-      type: "text",
-      name: "officeNumber",
-      message: "office Number?",
+      type: "input",
+      name: "office",
+      message: "Enter office number: ",
    },
 ];
-const teamMembers = [
+const memberInfo = [
    {
       type: "list",
       name: "role",
-      message: "Employee Role?",
-      choices: ["Engineer", "Intern"],
+      message: "Choose employee role: ",
+      choices: ["Engineer", "Intern", "Finish"],
    },
    {
-      type: "text",
+      type: "input",
       name: "name",
-      message: "Employee Name?",
+      message: "Enter employee name: ",
    },
-
    {
-      type: "text",
+      type: "input",
       name: "id",
-      message: "Employee ID?",
+      message: "Enter employee ID: ",
    },
    {
-      type: "text",
+      type: "input",
       name: "email",
-      message: "Employee Email?",
+      message: "Enter employee email?",
+      validate: (emp) => {
+         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+         if (!emailRegex.test(emp)) {
+            return "You must provide a valid email address!";
+         }
+         return true;
+      },
+   },
+   {
+      type: "input",
+      name: "school",
+      message: "Enter intern school:",
+      when: (emp) => emp.role === "Intern",
+   },
+   {
+      type: "input",
+      name: "github",
+      message: "Enter engineer's github username:",
+      when: (emp) => emp.role === "Engineer",
+   },
+   {
+      type: "loop",
+      name: "moreemployee",
+      message: "Do you want another employee?",
+      questions: [
+         {
+            type: "list",
+            name: "role",
+            message: "Choose employee role: ",
+            choices: ["Engineer", "Intern", "Finish"],
+         },
+         {
+            type: "input",
+            name: "name",
+            message: "Enter employee name: ",
+         },
+         {
+            type: "input",
+            name: "id",
+            message: "Enter employee ID: ",
+         },
+         {
+            type: "input",
+            name: "email",
+            message: "Enter employee email: ",
+            validate: (emp) => {
+               const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+               if (!emailRegex.test(emp)) {
+                  return "You must provide a valid email address!";
+               }
+               return true;
+            },
+         },
+         {
+            type: "input",
+            name: "school",
+            message: "Enter intern school:",
+            when: (emp) => emp.role === "Intern",
+         },
+         {
+            type: "input",
+            name: "github",
+            message: "Enter engineer's github username:",
+            when: (emp) => emp.role === "Engineer",
+         },
+      ],
    },
 ];
-
-inquirer.prompt(roles).then((team) => {
-   if (team.role === "Manager" || team.role === "manager") {
-      inquirer.prompt(managerInfo).then((answers) => {
-         let newEmployee = new Manager(answers.name, answers.role, answers.id, answers.email);
-         console.log(newEmployee.getName());
-         console.log(newEmployee.getRole());
-      });
-   }
-   if (answers.role === "Engineer") {
-      let newEmployee = new Engineer(answers.name, answers.role, answers.id, answers.email);
-      console.log(newEmployee.getName());
-      console.log(newEmployee.getRole());
-   }
-
-   if (answers.role === "Intern") {
-      let newEmployee = new Intern(answers.name, answers.role, answers.id, answers.email);
-      console.log(newEmployee.getName());
-      console.log(newEmployee.getRole());
-   }
-});
+function AddManagerInfo() {
+   console.log("\t\tAdd team manager \n====================================");
+   inquirer.prompt(managerInfo).then((mgr) => {
+      let newManager = new Manager(mgr.name, mgr.role, mgr.id, mgr.email, mgr.office);
+      console.log("Team manager: " + newManager.getName());
+      console.log("Office number: " + newManager.officeNum);
+      teamMembers.push(newManager);
+      AddTeamMember();
+   });
+}
+function AddTeamMember() {
+   console.log("\t\tAdd team members \n====================================");
+   inquirer.prompt(memberInfo).then((emp) => {
+      if (emp.role === "Engineer") {
+         let newEngineer = new Engineer(emp.name, emp.role, emp.id, emp.email, emp.github);
+         console.log("Engineer name: " + newEngineer.getName());
+         console.log("Github username: " + newEngineer.getGithub());
+         //store the engineer in teammembers
+         teamMembers.push(newEngineer);
+      } else if (emp.role === "Intern") {
+         let newIntern = new Intern(emp.name, emp.role, emp.id, emp.email, emp.school);
+         console.log("Intern name: " + newIntern.getName());
+         console.log("Intern School: " + newIntern.school);
+         //store the intern in teammembers
+         teamMembers.push(newIntern);
+      }
+      for (let i = 0; i < emp.moreemployee.length; i++) {
+         if (emp.moreemployee[i].role === "Engineer") {
+            let otherEngineer = new Engineer(
+               emp.moreemployee[i].name,
+               emp.moreemployee[i].role,
+               emp.moreemployee[i].id,
+               emp.moreemployee[i].email,
+               emp.moreemployee[i].github
+            );
+            console.log("Other engineer name: " + otherEngineer.getName());
+            console.log("Other github username: " + otherEngineer.getGithub());
+            //store the engineer in teammembers
+            teamMembers.push(otherEngineer);
+         } else if (emp.moreemployee[i].role === "Intern") {
+            let otherIntern = new Intern(
+               emp.moreemployee[i].name,
+               emp.moreemployee[i].role,
+               emp.moreemployee[i].id,
+               emp.moreemployee[i].email,
+               emp.moreemployee[i].school
+            );
+            console.log("Other Intern name: " + otherIntern.getName());
+            console.log("Other Intern School: " + otherIntern.school);
+            //store the intern in teammembers
+            teamMembers.push(newIntern);
+         }
+      }
+   });
+}
+AddManagerInfo();
