@@ -10,11 +10,10 @@ One can clone the repository from github and download the file. Please make sure
 
 ## Buit with:
 
+-  Javascript
 -  npm inquirer
 -  HTML
 -  CSS
--  Javascript
-
 ## License
 
 MIT
