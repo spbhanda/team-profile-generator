@@ -24,8 +24,8 @@ MIT
 'npm test'
 
 ## Demontration Video:
-[](../../../Downloads/genrt_emplyee_profle.mp4)
+![](https://github.com/spbhanda/team-profile-generator/blob/main/assets_image/genrt_emplyee_profle.mp4)
 
 ## Webpage Snapshot:
 
-![](https://github.com/spbhanda/team-profile-generator/blob/main/assets_image/app_capture.jpg)
+![](https://github.com/spbhanda/team-profile-generator/blob/main/assets_image/app_capture.JPG)
