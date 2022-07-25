@@ -24,8 +24,8 @@ MIT
 'npm test'
 
 ## Demontration Video:
-![app_capture](https://user-images.githubusercontent.com/102477297/180886718-69dcba92-31bc-46de-b32c-39b3a89a3b6e.JPG)
 
+https://drive.google.com/file/d/1PG3Gd8GsQWTqhZUc2ZN_YIjO5tNM4JxQ/view
 
 
 ## Webpage Snapshot:
