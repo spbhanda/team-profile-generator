@@ -1,10 +1,20 @@
+// create HTML page:
+// const { generateTeamPage, generateManager, generateEngineer, generateIntern } = require("./src/literrals");
+const generateTeamPage = require("./src/literrals");
+
+// node modules
+const fs = require("fs");
 const inquirer = require("inquirer");
+
+// team profiles and loop
 inquirer.registerPrompt("loop", require("inquirer-loop")(inquirer));
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+
 // team array
 const teamMembers = [];
+
 const managerInfo = [
    {
       type: "input",
@@ -78,7 +88,7 @@ const memberInfo = [
    {
       type: "loop",
       name: "moreemployee",
-      message: "Do you want another employee?",
+      message: "Do you want add another employee?",
       questions: [
          {
             type: "list",
@@ -130,6 +140,7 @@ function AddManagerInfo() {
       console.log("Team manager: " + newManager.getName());
       console.log("Office number: " + newManager.officeNum);
       teamMembers.push(newManager);
+
       AddTeamMember();
    });
 }
@@ -173,9 +184,18 @@ function AddTeamMember() {
             console.log("Other Intern name: " + otherIntern.getName());
             console.log("Other Intern School: " + otherIntern.school);
             //store the intern in teammembers
-            teamMembers.push(newIntern);
+            teamMembers.push(otherIntern);
          }
       }
+      createHTML();
    });
 }
+
+function createHTML() {
+   fs.writeFile("./dist/index.html", generateTeamPage(teamMembers), (err) =>
+      err ? console.log(err) : console.log("File created successfully!")
+   );
+}
+
 AddManagerInfo();
+// viewTeam();
