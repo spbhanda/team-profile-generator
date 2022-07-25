@@ -1,0 +1,16 @@
+* {
+   box-sizing: border-box;
+}
+#manager {
+   background-color: lightblue;
+   border: solid;
+}
+
+#engineer {
+   background-color: rgb(207, 228, 194);
+   border: solid;
+}
+#intern {
+   background-color: rgb(228, 194, 227);
+   border: solid;
+}
